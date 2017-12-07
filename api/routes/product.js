@@ -21,4 +21,22 @@ router.get('/:id', (req, res, next) => {
     })
 })
 
+router.patch('/:id', (req, res, next) => {
+    let productID = req.params.id;
+    res.status(200).json({
+        message: "handling PATCH request /products/:id",
+        id: productID,
+        status: "Updated Product"
+    })
+})
+
+router.delete('/:id', (req, res, next) => {
+    let productID = req.params.id;
+    res.status(200).json({
+        message: "handling Delete request /products/:id",
+        id: productID,
+        status: "Delete Product"
+    })
+})
+
 module.exports = router;
