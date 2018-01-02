@@ -42,4 +42,21 @@ router.post('/signup', (req, res, next) => {
 		});
 });
 
+router.delete('/:id', (req, res, next) => {
+	const userID = req.params.id;
+	User.findByIdAndRemove(userID)
+		.then(result => {
+			if (!result) {
+				return res.status(404).json({
+					message: 'No User found'
+				});
+			}
+			res.status(200).json({
+				result,
+				message: 'User Deleted'
+			});
+		})
+		.catch(err => next(err));
+});
+
 module.exports = router;
