@@ -9,16 +9,19 @@ const orderRoutes = require('./api/routes/orders');
 
 mongoose.Promise = global.Promise;
 //mongoose connection to DB
-mongoose.connect('mongodb://127.0.0.1:27017/ProductDB', {useMongoClient : true});
-mongoose.connection.on('connected', ()=>{
+mongoose.connect('mongodb://127.0.0.1:27017/ProductDB', {
+	useMongoClient: true
+});
+mongoose.connection.on('connected', () => {
 	console.log('Conncected to the DB');
-	
 });
 
 app.use(require('morgan')('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
+
+app.use('/uploads', express.static('uploads'));
 
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
