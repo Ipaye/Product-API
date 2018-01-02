@@ -29,7 +29,7 @@ router.get('/', (req, res, next) => {
 						price: product.price,
 						request: {
 							type: 'GET',
-							url: 'http://localhost:3000/products/' + Product._id
+							url: 'http://localhost:3000/products/' + product._id
 						}
 					};
 				}),
