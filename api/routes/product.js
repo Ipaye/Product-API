@@ -6,10 +6,14 @@ const router = express.Router();
 
 const storage = multer.diskStorage({
 	destination: function(req, file, cb) {
-		cb(null, 'uploads');
+		console.log('here');
+		cb(null, './uploads/');
 	},
 	filename: function(req, file, cb) {
-		cb(null, new Date().toISOString() + file.originalname);
+		function getRandom() {
+			return Math.random() * (1000000 - 10) + 10;
+		}
+		cb(null, Math.floor(getRandom()) + file.originalname);
 	}
 });
 
@@ -41,9 +45,10 @@ router.get('/', (req, res, next) => {
 						_id: product._id,
 						name: product.name,
 						price: product.price,
+						productImage: product.productImage,
 						request: {
 							type: 'GET',
-							url: 'http://localhost:3000/products/' + Product._id
+							url: 'http://localhost:3000/products/' + product._id
 						}
 					};
 				}),

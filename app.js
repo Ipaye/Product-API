@@ -17,11 +17,10 @@ mongoose.connection.on('connected', () => {
 });
 
 app.use(require('morgan')('dev'));
+app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
-
-app.use('/uploads', express.static('uploads'));
 
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
