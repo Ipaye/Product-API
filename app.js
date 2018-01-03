@@ -6,6 +6,7 @@ const app = express();
 
 const productRoutes = require('./api/routes/product');
 const orderRoutes = require('./api/routes/orders');
+const userRoutes = require('./api/routes/user');
 
 mongoose.Promise = global.Promise;
 //mongoose connection to DB
@@ -24,6 +25,7 @@ app.use(cors());
 
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
+app.use('/users', userRoutes);
 
 app.use((req, res, next) => {
 	const error = new Error('End-point not found');
