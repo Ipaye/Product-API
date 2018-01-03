@@ -65,7 +65,7 @@ router.post('/login', (req, res, next) => {
 								email: user.email,
 								userID: user._id
 							},
-							'thisismeanttobeareallylongsecret',
+							process.env.SECRET || 'thisismeanttobeareallylongsecret',
 							{
 								expiresIn: '1hr'
 							}

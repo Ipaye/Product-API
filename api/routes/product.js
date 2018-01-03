@@ -2,7 +2,9 @@ const Product = require('../models/product');
 const mongoose = require('mongoose');
 const express = require('express');
 const multer = require('multer');
+
 const router = express.Router();
+const checkAuthState = require('../middlewares/checkAuthState');
 
 const storage = multer.diskStorage({
 	destination: function(req, file, cb) {
@@ -60,29 +62,34 @@ router.get('/', (req, res, next) => {
 		});
 });
 
-router.post('/', upload.single('productImage'), (req, res, next) => {
-	console.log(req.file);
-	const newProduct = new Product({
-		_id: mongoose.Types.ObjectId(),
-		name: req.body.name,
-		price: req.body.price,
-		productImage: req.file.path
-	});
-
-	newProduct
-		.save()
-		.then(function(result) {
-			res.status(201).json({
-				message: 'Saved new Product 🙋',
-				status: 'Success',
-				result
-			});
-			console.log(result);
-		})
-		.catch(err => {
-			next(err);
+router.post(
+	'/',
+	checkAuthState,
+	upload.single('productImage'),
+	(req, res, next) => {
+		console.log(req.file);
+		const newProduct = new Product({
+			_id: mongoose.Types.ObjectId(),
+			name: req.body.name,
+			price: req.body.price,
+			productImage: req.file.path
 		});
-});
+
+		newProduct
+			.save()
+			.then(function(result) {
+				res.status(201).json({
+					message: 'Saved new Product 🙋',
+					status: 'Success',
+					result
+				});
+				console.log(result);
+			})
+			.catch(err => {
+				next(err);
+			});
+	}
+);
 
 router.get('/:id', (req, res, next) => {
 	let productID = req.params.id;
@@ -105,7 +112,7 @@ router.get('/:id', (req, res, next) => {
 		});
 });
 
-router.patch('/:id', (req, res, next) => {
+router.patch('/:id', checkAuthState, (req, res, next) => {
 	const id = req.params.id;
 	const updateOps = {};
 	for (const ops of req.body) {
@@ -122,7 +129,7 @@ router.patch('/:id', (req, res, next) => {
 		.catch(err => next(err));
 });
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', checkAuthState, (req, res, next) => {
 	const ProductID = req.params.id;
 	Product.findByIdAndRemove(ProductID)
 		.then(result => {
